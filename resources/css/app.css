@@ -146,6 +146,40 @@ body,
     text-align: center;
 }
 
+.map-pin-div-icon {
+    background: transparent;
+    border: 0;
+}
+
+.map-pin-icon-wrap {
+    display: inline-flex;
+    line-height: 1;
+}
+
+.map-pin-icon {
+    font-size: 2rem;
+}
+
+.map-pin-label-tooltip {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+}
+
+.map-pin-label-tooltip::before {
+    display: none;
+}
+
+.map-context-alert {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 300px;
+    z-index: 60;
+    pointer-events: auto;
+}
+
 .map-context-menu {
     position: absolute;
     width: 220px;

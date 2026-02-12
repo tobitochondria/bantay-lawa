@@ -8,7 +8,7 @@ import {
 } from 'react-icons/fi'
 import MapControlButton from './MapControlButton'
 
-export default function MapRightControls({ onZoomIn, onZoomOut, onLocate }) {
+export default function MapRightControls({ onZoomIn, onZoomOut, onLocate, onClearOverlays }) {
   return (
     <div className="map-right-controls d-flex flex-column gap-3">
       <MapControlButton icon={FiBarChart2} label="Statistics" />
@@ -16,7 +16,7 @@ export default function MapRightControls({ onZoomIn, onZoomOut, onLocate }) {
       <MapControlButton icon={FiCompass} label="My location" onClick={onLocate} />
       <MapControlButton icon={FiPlus} label="Zoom in" onClick={onZoomIn} />
       <MapControlButton icon={FiMinus} label="Zoom out" onClick={onZoomOut} />
-      <MapControlButton icon={FiTrash2} label="Clear Overlays" />
+      <MapControlButton icon={FiTrash2} label="Clear Overlays" onClick={onClearOverlays} />
     </div>
   )
 }

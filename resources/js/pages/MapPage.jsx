@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css'
 import MapBasemapButton from '../components/ui/MapBasemapButton'
 import CoordinatesScale from '../components/ui/CoordinatesScale'
 import MapContextMenu from '../components/ui/MapContextMenu'
+import { createMapPinDivIcon } from '../components/ui/MapPinIcon'
 import MapRightControls from '../components/ui/MapRightControls'
 import MapScreenshotButton from '../components/ui/MapScreenshotButton'
 import MapSearchBar from '../components/ui/MapSearchBar'
@@ -17,6 +18,9 @@ const PHILIPPINES_BOUNDS = L.latLngBounds(
 export default function MapPage() {
   const mapContainerRef = useRef(null)
   const mapRef = useRef(null)
+  const copyAlertTimerRef = useRef(null)
+  const placePinMarkerRef = useRef(null)
+  const locationPinMarkerRef = useRef(null)
   const [mapInstance, setMapInstance] = useState(null)
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
   const [isSidebarPinned, setIsSidebarPinned] = useState(false)
@@ -26,6 +30,11 @@ export default function MapPage() {
     y: 0,
     lat: null,
     lng: null,
+  })
+  const [copyAlert, setCopyAlert] = useState({
+    isOpen: false,
+    title: '',
+    subtitle: '',
   })
 
   const handleOpenSidebar = () => {
@@ -61,6 +70,53 @@ export default function MapPage() {
     }
   }
 
+  const createOrUpdatePinMarker = ({ markerRef, lat, lng, colorClass, onRemove }) => {
+    if (!mapRef.current) {
+      return
+    }
+
+    if (!markerRef.current) {
+      markerRef.current = L.marker([lat, lng], {
+        icon: createMapPinDivIcon(colorClass),
+      }).addTo(mapRef.current)
+
+      markerRef.current.bindTooltip(
+        '<span class="badge text-bg-light border border-secondary-subtle text-dark">Right-click to remove pin</span>',
+        {
+          permanent: true,
+          direction: 'top',
+          offset: [0, -34],
+          className: 'map-pin-label-tooltip',
+          interactive: false,
+        },
+      )
+
+      markerRef.current.on('contextmenu', (event) => {
+        if (event.originalEvent) {
+          L.DomEvent.stop(event.originalEvent)
+        }
+
+        markerRef.current?.remove()
+        markerRef.current = null
+        onRemove()
+      })
+    } else {
+      markerRef.current.setLatLng([lat, lng])
+    }
+  }
+
+  const handleClearOverlays = () => {
+    if (placePinMarkerRef.current) {
+      placePinMarkerRef.current.remove()
+      placePinMarkerRef.current = null
+    }
+
+    if (locationPinMarkerRef.current) {
+      locationPinMarkerRef.current.remove()
+      locationPinMarkerRef.current = null
+    }
+  }
+
   const handleLocate = () => {
     if (!mapRef.current || !navigator.geolocation) {
       return
@@ -69,7 +125,73 @@ export default function MapPage() {
     navigator.geolocation.getCurrentPosition((position) => {
       const { latitude, longitude } = position.coords
       mapRef.current.setView([latitude, longitude], 14)
+
+      createOrUpdatePinMarker({
+        markerRef: locationPinMarkerRef,
+        lat: latitude,
+        lng: longitude,
+        colorClass: 'text-primary',
+        onRemove: () => {},
+      })
     })
+  }
+
+  const handleContextMenuAction = async (actionId, coordinates) => {
+    const actionCoordinates = coordinates ?? { lat: 0, lng: 0 }
+
+    const handleMeasureDistance = () => {}
+    const handleMeasureArea = () => {}
+    const handleElevationProfile = () => {}
+    const handlePlacePin = () => {
+      createOrUpdatePinMarker({
+        markerRef: placePinMarkerRef,
+        lat: actionCoordinates.lat,
+        lng: actionCoordinates.lng,
+        colorClass: 'text-danger',
+        onRemove: () => {},
+      })
+    }
+    const handleCopyCoordinates = async () => {
+      const coordinateText = `${actionCoordinates.lat.toFixed(5)}, ${actionCoordinates.lng.toFixed(5)}`
+
+      if (navigator.clipboard?.writeText) {
+        await navigator.clipboard.writeText(coordinateText)
+      }
+
+      setCopyAlert({
+        isOpen: true,
+        title: 'Coordinates copied to clipboard',
+        subtitle: coordinateText,
+      })
+
+      if (copyAlertTimerRef.current) {
+        window.clearTimeout(copyAlertTimerRef.current)
+      }
+
+      copyAlertTimerRef.current = window.setTimeout(() => {
+        setCopyAlert((currentValue) => ({ ...currentValue, isOpen: false }))
+      }, 2200)
+    }
+
+    switch (actionId) {
+      case 'measure-distance':
+        handleMeasureDistance()
+        break
+      case 'measure-area':
+        handleMeasureArea()
+        break
+      case 'elevation-profile':
+        handleElevationProfile()
+        break
+      case 'place-pin':
+        handlePlacePin()
+        break
+      case 'copy-coordinates':
+        await handleCopyCoordinates()
+        break
+      default:
+        break
+    }
   }
 
   useEffect(() => {
@@ -96,9 +218,27 @@ export default function MapPage() {
 
     return () => {
       if (mapRef.current) {
+        if (placePinMarkerRef.current) {
+          placePinMarkerRef.current.remove()
+          placePinMarkerRef.current = null
+        }
+
+        if (locationPinMarkerRef.current) {
+          locationPinMarkerRef.current.remove()
+          locationPinMarkerRef.current = null
+        }
+
         mapRef.current.remove()
         mapRef.current = null
         setMapInstance(null)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    return () => {
+      if (copyAlertTimerRef.current) {
+        window.clearTimeout(copyAlertTimerRef.current)
       }
     }
   }, [])
@@ -166,6 +306,13 @@ export default function MapPage() {
       <div ref={mapContainerRef} className="map-canvas" />
 
       <div className="map-overlay">
+        {copyAlert.isOpen ? (
+          <div className="alert alert-success shadow-sm map-context-alert mb-0" role="alert">
+            <div className="fw-semibold">{copyAlert.title}</div>
+            <div className="small">{copyAlert.subtitle}</div>
+          </div>
+        ) : null}
+
         <MapSearchBar onMenuClick={handleOpenSidebar} />
         <MapSidebar
           isOpen={isSidebarOpen}
@@ -179,6 +326,7 @@ export default function MapPage() {
           isOpen={contextMenu.isOpen}
           position={{ x: contextMenu.x, y: contextMenu.y }}
           coordinates={{ lat: contextMenu.lat ?? 0, lng: contextMenu.lng ?? 0 }}
+          onAction={handleContextMenuAction}
           onClose={() => setContextMenu((currentValue) => ({ ...currentValue, isOpen: false }))}
         />
         <CoordinatesScale map={mapInstance} />
@@ -186,6 +334,7 @@ export default function MapPage() {
           onZoomIn={handleZoomIn}
           onZoomOut={handleZoomOut}
           onLocate={handleLocate}
+          onClearOverlays={handleClearOverlays}
         />
         <MapScreenshotButton />
       </div>

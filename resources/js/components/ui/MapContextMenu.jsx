@@ -2,7 +2,7 @@ import { useMemo } from 'react'
 import { FiCopy, FiMapPin, FiMaximize2, FiTrendingUp } from 'react-icons/fi'
 import { TbRulerMeasure } from 'react-icons/tb'
 
-export default function MapContextMenu({ isOpen, position, coordinates, onClose }) {
+export default function MapContextMenu({ isOpen, position, coordinates, onAction, onClose }) {
   const items = useMemo(() => {
     return [
       { id: 'measure-distance', label: 'Measure Distance', icon: TbRulerMeasure },
@@ -17,15 +17,8 @@ export default function MapContextMenu({ isOpen, position, coordinates, onClose 
     return null
   }
 
-  const handleItemClick = async (itemId) => {
-    if (itemId === 'copy-coordinates' && coordinates) {
-      const coordinateText = `${coordinates.lat.toFixed(5)}, ${coordinates.lng.toFixed(5)}`
-
-      if (navigator.clipboard?.writeText) {
-        await navigator.clipboard.writeText(coordinateText)
-      }
-    }
-
+  const handleItemClick = (itemId) => {
+    onAction(itemId, coordinates)
     onClose()
   }
 
