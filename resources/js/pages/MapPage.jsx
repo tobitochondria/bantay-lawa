@@ -9,6 +9,7 @@ import MapRightControls from '../components/ui/MapRightControls'
 import MapScreenshotButton from '../components/ui/MapScreenshotButton'
 import MapSearchBar from '../components/ui/MapSearchBar'
 import MapSidebar from '../components/ui/MapSidebar'
+import LoginModal from '../components/ui/Auth/LoginModal'
 import LakeInfoPanel from '../components/ui/LakeInfoPanel/LakeInfoPanel'
 
 const PHILIPPINES_BOUNDS = L.latLngBounds(
@@ -40,6 +41,7 @@ export default function MapPage() {
   })
   const [isLakeInfoOpen, setIsLakeInfoOpen] = useState(false)
   const [isLakeInfoClosing, setIsLakeInfoClosing] = useState(false)
+  const [isLoginModalOpen, setIsLoginModalOpen] = useState(false)
 
   const handleOpenLakeInfoPanel = () => {
     setIsLakeInfoClosing(false)
@@ -65,6 +67,14 @@ export default function MapPage() {
 
   const handleOpenSidebar = () => {
     setIsSidebarOpen(true)
+  }
+
+  const handleOpenLoginModal = () => {
+    setIsLoginModalOpen(true)
+  }
+
+  const handleCloseLoginModal = () => {
+    setIsLoginModalOpen(false)
   }
 
   const handleCloseSidebar = () => {
@@ -373,6 +383,7 @@ export default function MapPage() {
           isPinned={isSidebarPinned}
           onPinToggle={handleToggleSidebarPin}
           onClose={handleCloseSidebar}
+          onLoginClick={handleOpenLoginModal}
           mainMap={mapInstance}
         />
         <MapBasemapButton />
@@ -396,6 +407,7 @@ export default function MapPage() {
           isClosing={isLakeInfoClosing}
           onClose={handleCloseLakeInfoPanel}
         />
+        <LoginModal isOpen={isLoginModalOpen} onClose={handleCloseLoginModal} />
       </div>
     </div>
   )

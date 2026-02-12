@@ -4,11 +4,19 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 import '../css/app.css'
 import { createInertiaApp } from '@inertiajs/react'
 import { createRoot } from 'react-dom/client'
-import AppPage from './pages/App.jsx'
+
+const pages = import.meta.glob('./pages/**/*.jsx', { eager: true })
 
 createInertiaApp({
-  // Ignore the page name and always render the single page component
-  resolve: () => AppPage,
+  resolve: (name) => {
+    const page = pages[`./pages/${name}.jsx`]
+
+    if (!page) {
+      throw new Error(`Page not found: ${name}`)
+    }
+
+    return page.default
+  },
   setup({ el, App, props }) {
     createRoot(el).render(<App {...props} />)
   },

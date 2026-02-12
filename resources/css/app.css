@@ -531,3 +531,224 @@ body,
         opacity: 0;
     }
 }
+
+.auth-login-backdrop {
+    z-index: 1400;
+    background: rgba(8, 18, 38, 0.45);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
+    pointer-events: auto;
+}
+
+.auth-login-modal {
+    max-width: 1020px;
+    border-radius: 18px;
+    background: linear-gradient(110deg, rgba(19, 39, 72, 0.92), rgba(33, 49, 78, 0.88));
+    border: 1px solid rgba(148, 163, 184, 0.25) !important;
+}
+
+.auth-login-close {
+    width: 60px;
+    height: 42px;
+    border-radius: 10px;
+}
+
+.auth-login-input,
+.auth-login-input:focus {
+    background: rgba(10, 23, 49, 0.7);
+    border-color: rgba(96, 165, 250, 0.25);
+    color: #e2e8f0;
+    box-shadow: none;
+}
+
+.auth-login-input::placeholder {
+    color: #94a3b8;
+}
+
+.auth-login-input-icon {
+    background: rgba(10, 23, 49, 0.7);
+    border-color: rgba(96, 165, 250, 0.25);
+    color: #cbd5e1;
+}
+
+.auth-login-submit {
+    color: #fff;
+    border: 0;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #3b82f6, #06b6d4);
+}
+
+.auth-login-submit:hover {
+    color: #fff;
+    filter: brightness(1.05);
+}
+
+.auth-login-modal .text-light-emphasis {
+    color: #cbd5e1 !important;
+}
+
+.dashboard-page {
+    min-height: 100vh;
+    background: #f2f4f7;
+    display: flex;
+    gap: 1rem;
+    padding: 0.75rem;
+}
+
+.dashboard-sidebar {
+    width: 230px;
+    min-width: 230px;
+    background: linear-gradient(180deg, #1a2b47, #1d2d47);
+    color: #e5edf9;
+    border-radius: 16px;
+    padding: 0.85rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    transition: width 220ms ease, min-width 220ms ease;
+}
+
+.dashboard-sidebar.dashboard-sidebar-collapsed {
+    width: 58px;
+    min-width: 58px;
+    padding: 0.85rem 0.35rem;
+}
+
+.dashboard-sidebar-brand {
+    padding: 0.7rem 0.7rem 0.9rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.dashboard-sidebar.dashboard-sidebar-collapsed .dashboard-sidebar-brand {
+    justify-content: center;
+    padding: 0.7rem 0.2rem 0.9rem;
+}
+
+.dashboard-sidebar.dashboard-sidebar-collapsed .dashboard-sidebar-brand span {
+    display: none;
+}
+
+.dashboard-sidebar-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.dashboard-sidebar-link {
+    color: #dbe7fb;
+    border: 0;
+    border-radius: 10px;
+    font-weight: 500;
+    padding: 0.62rem 0.7rem;
+    background: transparent;
+}
+
+.dashboard-sidebar.dashboard-sidebar-collapsed .dashboard-sidebar-link,
+.dashboard-sidebar.dashboard-sidebar-collapsed .dashboard-sidebar-user,
+.dashboard-sidebar.dashboard-sidebar-collapsed .dashboard-sidebar-signout {
+    justify-content: center;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.dashboard-sidebar.dashboard-sidebar-collapsed .dashboard-sidebar-link span,
+.dashboard-sidebar.dashboard-sidebar-collapsed .dashboard-sidebar-user span,
+.dashboard-sidebar.dashboard-sidebar-collapsed .dashboard-sidebar-signout span {
+    display: none;
+}
+
+.dashboard-sidebar-link.active {
+    background: rgba(59, 130, 246, 0.18);
+    color: #4f96ff;
+}
+
+.dashboard-sidebar-link:hover,
+.dashboard-sidebar-user:hover,
+.dashboard-sidebar-signout:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+}
+
+.dashboard-sidebar-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    margin-top: 1rem;
+}
+
+.dashboard-sidebar-user,
+.dashboard-sidebar-signout {
+    color: #dbe7fb;
+    border-radius: 10px;
+    padding: 0.55rem 0.7rem;
+    background: transparent;
+}
+
+.dashboard-sidebar-signout {
+    color: #ff7878;
+}
+
+.dashboard-main {
+    flex: 1;
+    min-width: 0;
+}
+
+.dashboard-topbar,
+.dashboard-overview-panel,
+.dashboard-overview-header,
+.dashboard-stat-card {
+    border-radius: 12px;
+}
+
+.dashboard-circle-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    color: #fff;
+    background: #3b82f6;
+}
+
+.dashboard-circle-btn:hover {
+    color: #fff;
+    background: #2f6fd5;
+}
+
+.dashboard-muted {
+    color: #748094;
+    font-size: 0.9rem;
+}
+
+.dashboard-stat-icon {
+    width: 56px;
+    height: 42px;
+    background: #edf3ff;
+    color: #3b82f6;
+    font-size: 1.4rem;
+}
+
+.dashboard-stat-value {
+    color: #0f2344;
+    font-size: 2rem;
+}
+
+.dashboard-role-title {
+    color: #0f2344;
+    font-size: 2.85rem;
+}
+
+.dashboard-import-card {
+    border-radius: 12px;
+}
+
+.dashboard-import-card h4 {
+    color: #0f2344;
+    margin-bottom: 0.45rem;
+}
+
+@media (max-width: 992px) {
+    .dashboard-page {
+        flex-direction: column;
+    }
+
+    .dashboard-sidebar {
+        width: 100%;
+        min-width: 0;
+    }
+}

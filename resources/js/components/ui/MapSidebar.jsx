@@ -6,7 +6,7 @@ const SOUTHEAST_ASIA_BOUNDS = L.latLngBounds(
   [28.0, 142.0],
 )
 
-export default function MapSidebar({ isOpen, isPinned, onPinToggle, onClose, mainMap }) {
+export default function MapSidebar({ isOpen, isPinned, onPinToggle, onClose, onLoginClick, mainMap }) {
   const miniMapContainerRef = useRef(null)
   const miniMapRef = useRef(null)
   const viewportRectangleRef = useRef(null)
@@ -157,7 +157,11 @@ export default function MapSidebar({ isOpen, isPinned, onPinToggle, onClose, mai
           </div>
 
           <div className="mt-auto border-top p-3">
-            <button type="button" className="btn btn-link text-decoration-none text-dark d-flex align-items-center gap-2 px-2">
+            <button
+              type="button"
+              className="btn btn-link text-decoration-none text-dark d-flex align-items-center gap-2 px-2"
+              onClick={onLoginClick}
+            >
               <i className="bi bi-box-arrow-in-right text-success" style={{ fontSize: '16px' }} aria-hidden="true" />
               <span>Log in</span>
             </button>
