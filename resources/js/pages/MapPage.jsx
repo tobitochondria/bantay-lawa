@@ -9,6 +9,7 @@ import MapRightControls from '../components/ui/MapRightControls'
 import MapScreenshotButton from '../components/ui/MapScreenshotButton'
 import MapSearchBar from '../components/ui/MapSearchBar'
 import MapSidebar from '../components/ui/MapSidebar'
+import LakeInfoPanel from '../components/ui/LakeInfoPanel/LakeInfoPanel'
 
 const PHILIPPINES_BOUNDS = L.latLngBounds(
   [4.5, 116.0],
@@ -19,6 +20,7 @@ export default function MapPage() {
   const mapContainerRef = useRef(null)
   const mapRef = useRef(null)
   const copyAlertTimerRef = useRef(null)
+  const lakeInfoCloseTimerRef = useRef(null)
   const placePinMarkerRef = useRef(null)
   const locationPinMarkerRef = useRef(null)
   const [mapInstance, setMapInstance] = useState(null)
@@ -36,6 +38,30 @@ export default function MapPage() {
     title: '',
     subtitle: '',
   })
+  const [isLakeInfoOpen, setIsLakeInfoOpen] = useState(false)
+  const [isLakeInfoClosing, setIsLakeInfoClosing] = useState(false)
+
+  const handleOpenLakeInfoPanel = () => {
+    setIsLakeInfoClosing(false)
+    setIsLakeInfoOpen(true)
+  }
+
+  const handleCloseLakeInfoPanel = () => {
+    if (!isLakeInfoOpen && !isLakeInfoClosing) {
+      return
+    }
+
+    setIsLakeInfoClosing(true)
+
+    if (lakeInfoCloseTimerRef.current) {
+      window.clearTimeout(lakeInfoCloseTimerRef.current)
+    }
+
+    lakeInfoCloseTimerRef.current = window.setTimeout(() => {
+      setIsLakeInfoOpen(false)
+      setIsLakeInfoClosing(false)
+    }, 350)
+  }
 
   const handleOpenSidebar = () => {
     setIsSidebarOpen(true)
@@ -240,6 +266,10 @@ export default function MapPage() {
       if (copyAlertTimerRef.current) {
         window.clearTimeout(copyAlertTimerRef.current)
       }
+
+      if (lakeInfoCloseTimerRef.current) {
+        window.clearTimeout(lakeInfoCloseTimerRef.current)
+      }
     }
   }, [])
 
@@ -301,6 +331,30 @@ export default function MapPage() {
     }
   }, [mapInstance])
 
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.repeat) {
+        return
+      }
+
+      if (event.key.toLowerCase() !== 'l') {
+        return
+      }
+
+      if (isLakeInfoOpen) {
+        handleCloseLakeInfoPanel()
+      } else {
+        handleOpenLakeInfoPanel()
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [isLakeInfoOpen, isLakeInfoClosing])
+
   return (
     <div className="map-page">
       <div ref={mapContainerRef} className="map-canvas" />
@@ -337,6 +391,11 @@ export default function MapPage() {
           onClearOverlays={handleClearOverlays}
         />
         <MapScreenshotButton />
+        <LakeInfoPanel
+          isOpen={isLakeInfoOpen}
+          isClosing={isLakeInfoClosing}
+          onClose={handleCloseLakeInfoPanel}
+        />
       </div>
     </div>
   )

@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from 'react'
-import { FiCrosshair, FiMapPin } from 'react-icons/fi'
 
 const DEFAULT_COORDINATES = {
   lat: 14.5995,
@@ -128,7 +127,7 @@ export default function CoordinatesScale({ map }) {
       <div className="card-body py-2 px-3">
         <div className="d-flex align-items-center justify-content-between gap-2 mb-2">
           <div className="d-flex align-items-center gap-2 text-dark coordinates-scale-coords">
-            <FiMapPin size={15} />
+            <i className="bi bi-geo-alt" style={{ fontSize: '15px' }} aria-hidden="true" />
             <span className="small fw-medium coordinates-scale-value">
               {coordinates.lat.toFixed(5)}, {coordinates.lng.toFixed(5)}
             </span>
@@ -141,7 +140,7 @@ export default function CoordinatesScale({ map }) {
             title="Toggle coordinate mode"
           >
             <span className="d-flex align-items-center gap-1">
-              <FiCrosshair size={12} />
+              <i className="bi bi-crosshair" style={{ fontSize: '12px' }} aria-hidden="true" />
               <span className="small">{modeLabel}</span>
             </span>
           </button>

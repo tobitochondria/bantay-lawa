@@ -1,4 +1,4 @@
-export default function MapControlButton({ icon: Icon, label, onClick, disabled = false }) {
+export default function MapControlButton({ iconClass, label, onClick, disabled = false }) {
   return (
     <button
       type="button"
@@ -6,7 +6,9 @@ export default function MapControlButton({ icon: Icon, label, onClick, disabled 
       onClick={onClick}
       disabled={disabled}
     >
-      <span className="map-control-icon">{Icon ? <Icon size={20} /> : null}</span>
+      <span className="map-control-icon">
+        {iconClass ? <i className={`bi ${iconClass}`} style={{ fontSize: '20px' }} aria-hidden="true" /> : null}
+      </span>
       <span className="map-control-label">{label}</span>
     </button>
   )

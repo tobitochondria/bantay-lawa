@@ -1,10 +1,17 @@
 import { useEffect, useRef, useState } from 'react'
-import { FiLayers } from 'react-icons/fi'
 import MapControlButton from './MapControlButton'
 
 export default function MapBasemapButton() {
   const [isOpen, setIsOpen] = useState(false)
   const wrapperRef = useRef(null)
+
+  const basemapOptions = [
+    'OpenStreetMap',
+    'Esri World Imagery',
+    'Esri Topographic',
+    'Esri Streets',
+    'ESA WorldCover',
+  ]
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -19,23 +26,15 @@ export default function MapBasemapButton() {
     }
   }, [])
 
-  const basemapOptions = [
-    'OpenStreetMap',
-    'Esri World Imagery',
-    'Esri Topographic',
-    'Esri Streets',
-    'ESA WorldCover',
-  ]
-
   return (
     <div ref={wrapperRef} className="map-basemap-control">
       <MapControlButton
-        icon={FiLayers}
+        iconClass="bi-layers"
         label="Basemap"
         onClick={() => setIsOpen((value) => !value)}
       />
 
-      {isOpen ? (
+      <div className={`map-basemap-panel-wrapper ${isOpen ? 'map-basemap-panel-open' : ''}`}>
         <div className="card shadow map-basemap-panel border-0">
           <div className="card-body p-3">
             <h6 className="fw-semibold mb-3">Basemap style</h6>
@@ -66,7 +65,7 @@ export default function MapBasemapButton() {
             </div>
           </div>
         </div>
-      ) : null}
+      </div>
     </div>
   )
 }

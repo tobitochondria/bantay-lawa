@@ -1,22 +1,14 @@
-import {
-  FiBarChart2,
-  FiCompass,
-  FiDatabase,
-  FiPlus,
-  FiMinus,
-  FiTrash2,
-} from 'react-icons/fi'
 import MapControlButton from './MapControlButton'
 
 export default function MapRightControls({ onZoomIn, onZoomOut, onLocate, onClearOverlays }) {
   return (
     <div className="map-right-controls d-flex flex-column gap-3">
-      <MapControlButton icon={FiBarChart2} label="Statistics" />
-      <MapControlButton icon={FiDatabase} label="Data Summary" />
-      <MapControlButton icon={FiCompass} label="My location" onClick={onLocate} />
-      <MapControlButton icon={FiPlus} label="Zoom in" onClick={onZoomIn} />
-      <MapControlButton icon={FiMinus} label="Zoom out" onClick={onZoomOut} />
-      <MapControlButton icon={FiTrash2} label="Clear Overlays" onClick={onClearOverlays} />
+      <MapControlButton iconClass="bi-bar-chart" label="Statistics" />
+      <MapControlButton iconClass="bi-database" label="Data Summary" />
+      <MapControlButton iconClass="bi-compass" label="My location" onClick={onLocate} />
+      <MapControlButton iconClass="bi-plus-lg" label="Zoom in" onClick={onZoomIn} />
+      <MapControlButton iconClass="bi-dash-lg" label="Zoom out" onClick={onZoomOut} />
+      <MapControlButton iconClass="bi-trash" label="Clear Overlays" onClick={onClearOverlays} />
     </div>
   )
 }

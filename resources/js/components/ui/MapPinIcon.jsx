@@ -1,11 +1,10 @@
 import L from 'leaflet'
-import { FaMapMarkerAlt } from 'react-icons/fa'
 import { renderToStaticMarkup } from 'react-dom/server'
 
 function MapPinIcon({ colorClass }) {
   return (
     <span className="map-pin-icon-wrap">
-      <FaMapMarkerAlt className={`map-pin-icon ${colorClass}`} />
+      <i className={`bi bi-geo-alt-fill map-pin-icon ${colorClass}`} aria-hidden="true" />
     </span>
   )
 }

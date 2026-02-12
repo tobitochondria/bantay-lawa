@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import L from 'leaflet'
-import { FiChevronDown, FiChevronUp, FiLogIn, FiMapPin, FiNavigation, FiX } from 'react-icons/fi'
-import { PiDatabaseLight } from 'react-icons/pi'
 
 const SOUTHEAST_ASIA_BOUNDS = L.latLngBounds(
   [-12.0, 90.0],
@@ -99,7 +97,7 @@ export default function MapSidebar({ isOpen, isPinned, onPinToggle, onClose, mai
       >
         <div className="offcanvas-header border-bottom map-sidebar-header">
           <div className="d-flex align-items-center gap-2">
-            <FiMapPin className="text-success" size={22} />
+            <i className="bi bi-geo-alt text-success" style={{ fontSize: '22px' }} aria-hidden="true" />
             <h5 className="offcanvas-title mb-0 fw-semibold">LakeView PH</h5>
           </div>
 
@@ -110,10 +108,10 @@ export default function MapSidebar({ isOpen, isPinned, onPinToggle, onClose, mai
               aria-label="Pin sidebar"
               onClick={onPinToggle}
             >
-              <FiMapPin size={18} />
+              <i className="bi bi-pin-angle" style={{ fontSize: '18px' }} aria-hidden="true" />
             </button>
             <button type="button" className="btn btn-link text-dark p-1" aria-label="Close" onClick={onClose}>
-              <FiX size={18} />
+              <i className="bi bi-x-lg" style={{ fontSize: '18px' }} aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -127,7 +125,7 @@ export default function MapSidebar({ isOpen, isPinned, onPinToggle, onClose, mai
             </div>
 
             <button type="button" className="btn btn-link text-decoration-none p-3 text-info d-flex align-items-center gap-2 w-100 mt-2">
-              <FiNavigation size={16} />
+              <i className="bi bi-send" style={{ fontSize: '16px' }} aria-hidden="true" />
               <span>Submit Feedback</span>
             </button>
 
@@ -139,10 +137,14 @@ export default function MapSidebar({ isOpen, isPinned, onPinToggle, onClose, mai
                 aria-expanded={isAboutDataOpen}
               >
                 <span className="d-flex align-items-center gap-2">
-                  <PiDatabaseLight size={18} />
+                  <i className="bi bi-database" style={{ fontSize: '18px' }} aria-hidden="true" />
                   <span>About the Data</span>
                 </span>
-                {isAboutDataOpen ? <FiChevronUp size={16} /> : <FiChevronDown size={16} />}
+                {isAboutDataOpen ? (
+                  <i className="bi bi-chevron-up" style={{ fontSize: '16px' }} aria-hidden="true" />
+                ) : (
+                  <i className="bi bi-chevron-down" style={{ fontSize: '16px' }} aria-hidden="true" />
+                )}
               </button>
 
               {isAboutDataOpen ? (
@@ -156,7 +158,7 @@ export default function MapSidebar({ isOpen, isPinned, onPinToggle, onClose, mai
 
           <div className="mt-auto border-top p-3">
             <button type="button" className="btn btn-link text-decoration-none text-dark d-flex align-items-center gap-2 px-2">
-              <FiLogIn size={16} className="text-success" />
+              <i className="bi bi-box-arrow-in-right text-success" style={{ fontSize: '16px' }} aria-hidden="true" />
               <span>Log in</span>
             </button>
           </div>

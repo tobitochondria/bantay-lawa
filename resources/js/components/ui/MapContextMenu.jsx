@@ -1,15 +1,13 @@
 import { useMemo } from 'react'
-import { FiCopy, FiMapPin, FiMaximize2, FiTrendingUp } from 'react-icons/fi'
-import { TbRulerMeasure } from 'react-icons/tb'
 
 export default function MapContextMenu({ isOpen, position, coordinates, onAction, onClose }) {
   const items = useMemo(() => {
     return [
-      { id: 'measure-distance', label: 'Measure Distance', icon: TbRulerMeasure },
-      { id: 'measure-area', label: 'Measure Area', icon: FiMaximize2 },
-      { id: 'elevation-profile', label: 'Elevation Profile', icon: FiTrendingUp },
-      { id: 'place-pin', label: 'Place pin here', icon: FiMapPin },
-      { id: 'copy-coordinates', label: 'Copy Coordinates', icon: FiCopy },
+      { id: 'measure-distance', label: 'Measure Distance', iconClass: 'bi-rulers' },
+      { id: 'measure-area', label: 'Measure Area', iconClass: 'bi-aspect-ratio' },
+      { id: 'elevation-profile', label: 'Elevation Profile', iconClass: 'bi-graph-up' },
+      { id: 'place-pin', label: 'Place pin here', iconClass: 'bi-geo-alt' },
+      { id: 'copy-coordinates', label: 'Copy Coordinates', iconClass: 'bi-copy' },
     ]
   }, [])
 
@@ -31,8 +29,6 @@ export default function MapContextMenu({ isOpen, position, coordinates, onAction
     >
       <div className="list-group list-group-flush">
         {items.map((item) => {
-          const Icon = item.icon
-
           return (
             <button
               key={item.id}
@@ -40,7 +36,7 @@ export default function MapContextMenu({ isOpen, position, coordinates, onAction
               className="list-group-item list-group-item-action border-0 d-flex align-items-center gap-2 py-2 px-3"
               onClick={() => handleItemClick(item.id)}
             >
-              <Icon size={16} className="text-dark" />
+              <i className={`bi ${item.iconClass} text-dark`} aria-hidden="true" />
               <span className="text-dark">{item.label}</span>
             </button>
           )
